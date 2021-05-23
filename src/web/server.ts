@@ -1,5 +1,7 @@
 import 'dotenv/config'
 import Fastify, { FastifyInstance } from 'fastify'
+import FastifySwagger from 'fastify-swagger'
+import FastifyCors from 'fastify-cors'
 import { createConnection } from 'typeorm'
 import logger from '../lib/logger'
 
@@ -8,11 +10,39 @@ import SystemRoutes from './routes/system'
 const fastify: FastifyInstance = Fastify({ logger })
 
 createConnection().then(async connection => {
-  await fastify.register(SystemRoutes)
-
   if (process.env.PORT === undefined) {
     throw new Error('Environment variable PORT is required.')
   }
+
+  await fastify.register(FastifyCors)
+  // @ts-expect-error temporary ignore because hideUntagged is missing from types: https://github.com/fastify/fastify-swagger/pull/414
+  await fastify.register(FastifySwagger, {
+    openapi: {
+      info: {
+        title: 'Proof of Humanity REST',
+        description: 'Fast simple centralized REST API to fetch data from the Proof of Humanity protocol and ecosystem',
+        version: '0.1.0'
+      },
+      servers: [{
+        url: process.env.NODE_ENV === 'production' ? 'https://api.poh.dev' : `http://0.0.0.0:${process.env.PORT}`
+      }],
+      tags: [
+        {
+          name: 'profile',
+          description: ''
+        }, {
+          name: 'system',
+          description: ''
+        }
+      ]
+    },
+    routePrefix: '/docs',
+    exposeRoute: true,
+    hideUntagged: true
+  })
+
+  await fastify.register(SystemRoutes)
+
   return await fastify.listen(process.env.PORT, '0.0.0.0')
 }).catch(err => {
   fastify.log.error(err)

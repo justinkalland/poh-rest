@@ -6,7 +6,9 @@ This project compiles information about Proof of Humanity, stores and serves it 
 
 Sometimes centralized relational data is preferable. Such as building aggregated reports, data visualization, widgets, or for fun informative services.
 
-The goal of this API is to be intuitive and easy. To achieve this the schema is more understandable than the low-level data. For example the `/profile` endpoint.
+The goal of this API is to be fast, intuitive, and easy. To achieve this the schema is more understandable than the low-level data.
+
+## 📖 ➡️ [Documentation](https://api.poh.dev/docs)
 
 ## Contributing
 
