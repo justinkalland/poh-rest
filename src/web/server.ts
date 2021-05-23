@@ -13,7 +13,7 @@ createConnection().then(async connection => {
   if (process.env.PORT === undefined) {
     throw new Error('Environment variable PORT is required.')
   }
-  return await fastify.listen(process.env.PORT)
+  return await fastify.listen(process.env.PORT, '0.0.0.0')
 }).catch(err => {
   fastify.log.error(err)
   process.exit(1)
