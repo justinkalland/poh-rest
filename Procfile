@@ -1,3 +1,3 @@
-web: npm start:web
-worker: npm start:worker
+web: npm run start:web
+worker: npm run start:worker
 release: npm run typeorm migration:run
