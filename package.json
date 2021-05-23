@@ -1,0 +1,54 @@
+{
+  "name": "poh-rest",
+  "version": "0.1.0",
+  "engines": {
+    "node": "16.x"
+  },
+  "private": true,
+  "description": "Proof of Humanity REST",
+  "scripts": {
+    "start:web:dev": "nodemon",
+    "start:web": "node dist/web/server",
+    "start:worker:dev": "ts-node src/worker/main",
+    "start:worker": "node dist/worker/main",
+    "typeorm:dev": "ts-node ./node_modules/typeorm/cli.js",
+    "typeorm": "typeorm",
+    "build": "rm -rf dist/ && tsc -p .",
+    "lint": "eslint . --fix"
+  },
+  "author": "Justin Kalland <justin@kalland.com>",
+  "dependencies": {
+    "axios": "^0.21.1",
+    "axios-retry": "^3.1.9",
+    "bottleneck": "^2.19.5",
+    "dotenv": "^8.6.0",
+    "fastify": "^3.15.1",
+    "lodash": "^4.17.21",
+    "node-schedule": "^2.0.0",
+    "pg": "^8.6.0",
+    "pino": "^6.11.3",
+    "typeorm": "^0.2.32"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.js": "eslint",
+    "*.ts": "eslint"
+  },
+  "eslintConfig": {
+    "extends": "jk-ts"
+  },
+  "devDependencies": {
+    "@types/lodash": "^4.14.169",
+    "@types/node": "^15.6.0",
+    "@types/pino": "^6.3.8",
+    "eslint-config-jk-ts": "^1.5.3",
+    "nodemon": "^2.0.7",
+    "pino-pretty": "^4.8.0",
+    "ts-node": "^9.1.1",
+    "typescript": "^4.2.4"
+  }
+}

@@ -1,0 +1,14 @@
+{
+   "compilerOptions": {
+      "lib": ["ES2020"],
+      "target": "ES2020",
+      "module": "commonjs",
+      "moduleResolution": "node",
+      "outDir": "./dist",
+      "emitDecoratorMetadata": true,
+      "experimentalDecorators": true,
+      "sourceMap": true,
+      "esModuleInterop": true,
+      "strictNullChecks": true
+   }
+}
