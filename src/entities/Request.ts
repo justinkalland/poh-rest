@@ -14,7 +14,6 @@ import { Evidence } from './Evidence'
 @Entity()
 export class Request extends BaseEntity {
   @PrimaryColumn({
-    type: 'citext',
     update: false
   })
   id: string
@@ -43,7 +42,6 @@ export class Request extends BaseEntity {
   networkLastChangeAt: Date
 
   @Column({
-    type: 'citext',
     update: false
   })
   requesterEthAddress: string
@@ -59,9 +57,7 @@ export class Request extends BaseEntity {
   @UpdateDateColumn()
   updatedAt: Date
 
-  @Column({
-    type: 'citext'
-  })
+  @Column()
   submissionEthAddress: string
 
   @ManyToOne(type => Submission, async submission => await submission.requests)
