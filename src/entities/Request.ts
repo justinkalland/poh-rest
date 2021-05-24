@@ -42,6 +42,7 @@ export class Request extends BaseEntity {
   networkLastChangeAt: Date
 
   @Column({
+    type: 'citext',
     update: false
   })
   requesterEthAddress: string
@@ -57,7 +58,9 @@ export class Request extends BaseEntity {
   @UpdateDateColumn()
   updatedAt: Date
 
-  @Column()
+  @Column({
+    type: 'citext'
+  })
   submissionEthAddress: string
 
   @ManyToOne(type => Submission, async submission => await submission.requests)

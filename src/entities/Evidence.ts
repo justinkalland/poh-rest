@@ -17,7 +17,9 @@ export class Evidence extends BaseEntity {
   })
   id: string
 
-  @Column()
+  @Column({
+    type: 'citext'
+  })
   senderEthAddress: string
 
   @Column()
@@ -53,7 +55,9 @@ export class Evidence extends BaseEntity {
   @UpdateDateColumn()
   updatedAt: Date
 
-  @Column()
+  @Column({
+    type: 'citext'
+  })
   submissionEthAddress: string
 
   @ManyToOne(type => Submission, async submission => await submission.evidence)
