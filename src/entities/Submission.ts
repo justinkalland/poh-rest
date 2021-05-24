@@ -16,6 +16,7 @@ export enum SubmissionStatus {
 @Entity()
 export class Submission extends BaseEntity {
   @PrimaryColumn({
+    type: 'citext',
     update: false
   })
   ethAddress: string

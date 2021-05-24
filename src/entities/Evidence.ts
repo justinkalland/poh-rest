@@ -13,11 +13,14 @@ import { Submission } from './Submission'
 @Entity()
 export class Evidence extends BaseEntity {
   @PrimaryColumn({
+    type: 'citext',
     update: false
   })
   id: string
 
-  @Column()
+  @Column({
+    type: 'citext'
+  })
   senderEthAddress: string
 
   @Column()
@@ -53,13 +56,17 @@ export class Evidence extends BaseEntity {
   @UpdateDateColumn()
   updatedAt: Date
 
-  @Column()
+  @Column({
+    type: 'citext'
+  })
   submissionEthAddress: string
 
   @ManyToOne(type => Submission, async submission => await submission.evidence)
   submission: Promise<Submission>
 
-  @Column()
+  @Column({
+    type: 'citext'
+  })
   requestId: string
 
   @ManyToOne(type => Request, async request => await request.evidence)
