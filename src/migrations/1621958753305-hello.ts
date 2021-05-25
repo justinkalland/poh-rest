@@ -1,7 +1,7 @@
 import { MigrationInterface, QueryRunner } from 'typeorm'
 
-export class hello1621774155000 implements MigrationInterface {
-  name = 'hello1621774155000'
+export class hello1621958753305 implements MigrationInterface {
+  name = 'hello1621958753305'
 
   public async up (queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query('CREATE TYPE "submission_status_enum" AS ENUM(\'VOUCHING\', \'PENDING_REGISTRATION_REQUEST\', \'PENDING_REMOVAL_REQUEST\', \'DISPUTED_PENDING_REGISTRATION_REQUEST\', \'DISPUTED_PENDING_REMOVAL_REQUEST\', \'REGISTERED\', \'EXPIRED\', \'REMOVED\')')

@@ -1,6 +1,6 @@
 import { createConnection } from 'typeorm'
 import logger from '../../lib/logger'
-import ipfs from '../lib/ipfs'
+import ipfs from '../../lib/ipfs'
 
 import { Evidence } from '../../entities/Evidence'
 
@@ -25,7 +25,7 @@ createConnection().then(async connection => {
       return await evidence.save()
     }
 
-    const childData = ipfs.fetchJsonData(data?.fileURI)
+    const childData = await ipfs.fetchJsonData(data?.fileURI)
     if (childData === undefined) {
       return await evidence.save()
     }

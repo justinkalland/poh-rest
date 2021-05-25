@@ -3,7 +3,7 @@ import axiosRetry from 'axios-retry'
 import Bottleneck from 'bottleneck'
 import { extname } from 'path'
 
-const IPFS_GATEWAY = process.env.IPFS_GATEWAY === undefined ? '' : process.env.IPFS_GATEWAY
+const IPFS_GATEWAY_BASE = process.env.IPFS_GATEWAY_BASE === undefined ? '' : process.env.IPFS_GATEWAY_BASE
 
 axiosRetry(axios, { retries: 3, retryDelay: axiosRetry.exponentialDelay })
 const limitedGet = new Bottleneck({
@@ -12,15 +12,14 @@ const limitedGet = new Bottleneck({
 }).wrap(axios.get)
 
 function uriToHttp (uri: string): string | undefined {
-  if (uri === undefined) {
+  if (uri === undefined || uri === null) {
     return undefined
   }
 
   const position = uri.indexOf('ipfs/')
 
   if (position !== -1) {
-    // the '/' was left off indexOf on purpose - some URIs don't start with it.
-    return `${IPFS_GATEWAY}/${uri.slice(position)}`
+    return `${IPFS_GATEWAY_BASE}/${uri.slice(position)}`
   }
 
   if (uri.startsWith('http')) {

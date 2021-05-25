@@ -70,6 +70,15 @@ export class Evidence extends BaseEntity {
   request: Promise<Request>
 
   public get sentBySelf (): boolean {
-    return this.submissionEthAddress === this.senderEthAddress
+    if (this.submissionEthAddress === undefined || this.senderEthAddress === undefined) {
+      return false
+    }
+
+    // temporary patch to account for the first manually added humans in the registry
+    if (this.senderEthAddress.toLowerCase() === '0x595fe42383a783180a0f77ed672efa0090d7623a') {
+      return true
+    }
+
+    return this.submissionEthAddress.toLowerCase() === this.senderEthAddress.toLowerCase()
   }
 }
