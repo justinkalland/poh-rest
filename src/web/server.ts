@@ -6,6 +6,7 @@ import { createConnection } from 'typeorm'
 import logger from '../lib/logger'
 
 import SystemRoutes from './routes/system'
+import ProfilesRoutes from './routes/profiles'
 
 const fastify: FastifyInstance = Fastify({ logger })
 
@@ -24,11 +25,12 @@ createConnection().then(async connection => {
         version: '0.1.0'
       },
       servers: [{
+        // todo: this violates the III of The Twelve Factors, should be moved to the environment
         url: process.env.NODE_ENV === 'production' ? 'https://api.poh.dev' : `http://0.0.0.0:${process.env.PORT}`
       }],
       tags: [
         {
-          name: 'profile',
+          name: 'profiles',
           description: ''
         }, {
           name: 'system',
@@ -42,7 +44,9 @@ createConnection().then(async connection => {
   })
 
   await fastify.register(SystemRoutes)
+  await fastify.register(ProfilesRoutes)
 
+  // todo: this violates the III of The Twelve Factors, should be moved to the environment
   return await fastify.listen(process.env.PORT, '0.0.0.0')
 }).catch(err => {
   fastify.log.error(err)
