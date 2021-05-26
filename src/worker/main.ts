@@ -47,7 +47,9 @@ async function forkIfNotRunning (scriptName: string): Promise<number> {
 createConnection().then(async connection => {
   schedule.scheduleJob('*/10 * * * * *', async () => {
     await forkIfNotRunning('updateUnresolvedGraphRequests').then(async code => {
-      await forkIfNotRunning('updateEvidenceCache')
+      if (code !== -1) {
+        await forkIfNotRunning('updateEvidenceCache')
+      }
     })
   })
 }).catch(err => {
