@@ -7,7 +7,11 @@ export const fastifySwaggerOptions = {
     info: {
       title: 'Proof of Humanity REST',
       description: 'Fast simple centralized REST API to fetch data from the Proof of Humanity protocol and ecosystem',
-      version: '0.1.0'
+      version: '0.1.0',
+        contact: {
+            name: "Support",
+            url: "https://github.com/justinkalland/poh-rest"
+        },
     },
     servers: [{
       url: process.env.SELF_BASE === undefined ? '' : process.env.SELF_BASE
