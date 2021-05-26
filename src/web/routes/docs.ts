@@ -34,7 +34,7 @@ async function routes (fastify: FastifyInstance, options): Promise<void> {
   // Hackish way to inject some CSS to hide the ugly header from swagger-ui
   fastify.get('/docs/static/swagger-ui.css', async (request, reply) => {
     const css = await readFile(join(__dirname, '../../../node_modules/fastify-swagger/static/swagger-ui.css'))
-    await reply.type('text/css').send(css.toString() + '.topbar{display: none}.scheme-container{display: none}.main .url{display: none}')
+    await reply.type('text/css').send(css.toString() + '.topbar{display: none}.main .url{display: none}')
   })
 }
 
