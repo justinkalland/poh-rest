@@ -4,8 +4,10 @@ import ipfs from '../../lib/ipfs'
 
 import { Evidence } from '../../entities/Evidence'
 
+const LIMIT = 500
+
 createConnection().then(async connection => {
-  const evidenceToUpdate = await Evidence.find({ where: { isJson: null }, order: { networkCreationAt: 'ASC' } })
+  const evidenceToUpdate = await Evidence.find({ where: { isJson: null }, order: { networkCreationAt: 'ASC' }, take: LIMIT })
   logger.info(`Updating cache on ${evidenceToUpdate.length} pieces of evidence`)
 
   await Promise.all(evidenceToUpdate.map(async evidence => {
