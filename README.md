@@ -1,3 +1,5 @@
+<p align="center"><img src="https://user-images.githubusercontent.com/43973143/119685114-5dc2cb00-be45-11eb-9705-1877acf06d62.png" width="200"></p>
+
 # Proof of Humanity REST
 
 A read-only RESTful API for the Proof of Humanity protocol. Pulls data from the blockchain, IPFS, and other sources to build a local relational database. Serves the data via a simple REST API.
