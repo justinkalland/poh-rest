@@ -89,10 +89,43 @@ export const orderedWithCursorProperties = (orderByOptions: string[]): any => {
   }
 }
 
+export const status = {
+  description: 'Status of registry and ecosystem',
+  type: 'object',
+  properties: {
+    registry: {
+      type: 'object',
+      properties: {
+        total: { type: 'number', example: 6492 },
+        pending_removal: {
+          type: 'object',
+          properties: {
+            total: { type: 'number', example: 2 },
+            challenged: { type: 'number', example: 0 },
+            not_challenged: { type: 'number', example: 2 }
+          }
+        },
+        pending_registration: {
+          type: 'object',
+          properties: {
+            total: { type: 'number', example: 453 },
+            challenged: { type: 'number', example: 67 },
+            not_challenged: { type: 'number', example: 386 }
+          }
+        },
+        registered: { type: 'number', example: 5258 },
+        expired: { type: 'number', example: 0 },
+        removed: { type: 'number', example: 283 }
+      }
+    }
+  }
+}
+
 export default {
   ethAddressProperty,
   profile,
   profiles,
   paginatedMeta,
-  orderedWithCursorProperties
+  orderedWithCursorProperties,
+  status
 }

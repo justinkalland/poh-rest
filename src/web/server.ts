@@ -7,6 +7,7 @@ import logger from '../lib/logger'
 
 import SystemRoutes from './routes/system'
 import ProfilesRoutes from './routes/profiles'
+import StatusRoutes from './routes/status'
 
 const fastify: FastifyInstance = Fastify({ logger })
 
@@ -30,8 +31,11 @@ createConnection().then(async connection => {
       }],
       tags: [
         {
+          name: 'status',
+          description: 'Status of the registry and ecosystem'
+        }, {
           name: 'profiles',
-          description: ''
+          description: 'Details on humans that have used the registery'
         }, {
           name: 'system',
           description: ''
@@ -45,6 +49,7 @@ createConnection().then(async connection => {
 
   await fastify.register(SystemRoutes)
   await fastify.register(ProfilesRoutes)
+  await fastify.register(StatusRoutes)
 
   // todo: this violates the III of The Twelve Factors, should be moved to the environment
   return await fastify.listen(process.env.PORT, '0.0.0.0')
