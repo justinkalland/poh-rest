@@ -7,14 +7,26 @@ This is a living document. As you work through the steps, **please help out the 
 
 <!-- toc -->
 
+- [Welcome](#welcome)
 - [Running Locally](#running-locally)
 - [Testing](#testing)
-  * [Linting](#linting)
+- [Linting](#linting)
 
 <!-- tocstop -->
 
-## Running Locally
+## Welcome
+The main goal of this project is to provide an easy-to-consume API. To do this requires a lot of juggling and mapping. For example, internally, the network uses the naming "disputes" such as disputed registration request. But the API provides it under "challenges". Another example is boiling down submissions & requests to "profiles". Choices were made to try and stick with the public, human-centric view of the relational data.
 
+This project has three main pieces:
+- Postgres database
+  - Schema is managed by migration scripts in `src/migrations`
+  - Schemas are generated mainly by [TypeORM](https://typeorm.io/#/migrations) using the Entities (models)
+- Worker
+  - `npm run start:worker:dev` this process runs scripts that collect and populate the Postgres database
+- API Server
+  - `npm run start:web:dev` this serves the REST API - from data in Postgres
+
+## Running Locally
 1. Install [node](https://nodejs.org/en/) and [PostgresSQL](https://www.postgresql.org/)
     1. On MacOS if you don't have Postgres, consider [Postgress.app](https://postgresapp.com/)
     1. If you are on Linux based system, consider your local package manager instead. 
@@ -38,6 +50,6 @@ This is a living document. As you work through the steps, **please help out the 
 
 Todo ;)
 
-### Linting
+## Linting
 
 - `npm run lint`
