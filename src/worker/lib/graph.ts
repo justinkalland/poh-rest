@@ -146,16 +146,16 @@ async function processRequest (requestData): Promise<Request> {
 
   // removal requests
   if (!request.isRegistration) {
-    await createStatusChange(SubmissionStatus.PENDING_REMOVAL_REQUEST, request.networkCreationAt)
+    await createStatusChange(SubmissionStatus.PENDING_REMOVAL, request.networkCreationAt)
   }
 
   if (request.isRegistration && request.networkCreationAt.getTime() !== request.networkLastChangeAt.getTime()) {
-    await createStatusChange(SubmissionStatus.PENDING_REGISTRATION_REQUEST, request.networkLastChangeAt)
+    await createStatusChange(SubmissionStatus.PENDING_REGISTRATION, request.networkLastChangeAt)
   }
 
   // disputes (challenges)
   if (requestData.challenges.length !== 0) {
-    const challengeNewStatus = request.isRegistration ? SubmissionStatus.DISPUTED_PENDING_REGISTRATION_REQUEST : SubmissionStatus.DISPUTED_PENDING_REMOVAL_REQUEST
+    const challengeNewStatus = request.isRegistration ? SubmissionStatus.DISPUTED_PENDING_REGISTRATION : SubmissionStatus.DISPUTED_PENDING_REMOVAL
     await Promise.all(requestData.challenges.map(async challengeData => {
       const challengeNetworkAt = new Date(challengeData.creationTime * 1000)
       return await createStatusChange(challengeNewStatus, challengeNetworkAt)
@@ -210,16 +210,16 @@ async function processSubmission (submissionData): Promise<Submission> {
       break
     case 'PendingRegistration':
       if (submissionData.disputed === true) {
-        submission.status = SubmissionStatus.DISPUTED_PENDING_REGISTRATION_REQUEST
+        submission.status = SubmissionStatus.DISPUTED_PENDING_REGISTRATION
       } else {
-        submission.status = SubmissionStatus.PENDING_REGISTRATION_REQUEST
+        submission.status = SubmissionStatus.PENDING_REGISTRATION
       }
       break
     case 'PendingRemoval':
       if (submissionData.disputed === true) {
-        submission.status = SubmissionStatus.DISPUTED_PENDING_REMOVAL_REQUEST
+        submission.status = SubmissionStatus.DISPUTED_PENDING_REMOVAL
       } else {
-        submission.status = SubmissionStatus.PENDING_REMOVAL_REQUEST
+        submission.status = SubmissionStatus.PENDING_REMOVAL
       }
       break
     default:

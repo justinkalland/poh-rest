@@ -16,10 +16,10 @@ createConnection().then(async connection => {
   const pendingRemoval = {
     total: 0,
     challenged: await Submission.count({
-      where: { status: SubmissionStatus.DISPUTED_PENDING_REMOVAL_REQUEST }
+      where: { status: SubmissionStatus.DISPUTED_PENDING_REMOVAL }
     }),
     notChallenged: await Submission.count({
-      where: { status: SubmissionStatus.PENDING_REMOVAL_REQUEST }
+      where: { status: SubmissionStatus.PENDING_REMOVAL }
     })
   }
   pendingRemoval.total = pendingRemoval.challenged + pendingRemoval.notChallenged
@@ -27,10 +27,10 @@ createConnection().then(async connection => {
   const pendingRegistration = {
     total: 0,
     challenged: await Submission.count({
-      where: { status: SubmissionStatus.DISPUTED_PENDING_REGISTRATION_REQUEST }
+      where: { status: SubmissionStatus.DISPUTED_PENDING_REGISTRATION }
     }),
     notChallenged: await Submission.count({
-      where: { status: SubmissionStatus.PENDING_REGISTRATION_REQUEST }
+      where: { status: SubmissionStatus.PENDING_REGISTRATION }
     })
   }
   pendingRegistration.total = pendingRegistration.challenged + pendingRegistration.notChallenged
