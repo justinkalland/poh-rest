@@ -42,6 +42,21 @@ export const profile = {
   }
 }
 
+export const profileStatusHistory = {
+  description: 'Historic status changes of a profile',
+  type: 'array',
+  items: {
+    type: 'object',
+    properties: {
+      status: {
+        type: 'string',
+        enum: Object.keys(SubmissionStatus)
+      },
+      time: { type: 'string', format: 'date-time' }
+    }
+  }
+}
+
 export const paginatedMeta = {
   description: 'Profile (might not be registered)',
   type: 'object',
@@ -127,5 +142,6 @@ export default {
   profiles,
   paginatedMeta,
   orderedWithCursorProperties,
-  status
+  status,
+  profileStatusHistory
 }

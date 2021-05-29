@@ -3,6 +3,7 @@ import Schemas from '../Schemas'
 
 import { Submission } from '../../entities/Submission'
 import { URL } from 'url'
+import { SubmissionStatusChange } from '../../entities/SubmissionStatusChange'
 
 const PAGE_SIZE = 100
 
@@ -30,6 +31,31 @@ async function routes (fastify: FastifyInstance, options): Promise<void> {
     }
 
     return submission.toPublicProfile()
+  })
+
+  fastify.get<{
+    Params: { eth_address: string }
+  }>('/profiles/:eth_address/status-history', {
+    schema: {
+      description: 'Historic status changes of a profile',
+      tags: ['profiles'],
+      params: {
+        type: 'object',
+        required: ['eth_address'],
+        properties: { ...Schemas.ethAddressProperty }
+      },
+      response: {
+        200: Schemas.profileStatusHistory
+      }
+    }
+  }, async (request, reply) => {
+    const submissionStatusChanges = await SubmissionStatusChange.find({ where: { submissionEthAddress: request.params.eth_address }, order: { networkAt: 'ASC' } })
+
+    if (submissionStatusChanges.length === 0) {
+      return reply.callNotFound()
+    }
+
+    return submissionStatusChanges.map(change => change.toPublicStatusChange())
   })
 
   fastify.get<{

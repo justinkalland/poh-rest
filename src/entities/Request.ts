@@ -10,6 +10,7 @@ import {
 } from 'typeorm'
 import { Submission } from './Submission'
 import { Evidence } from './Evidence'
+import { SubmissionStatusChange } from './SubmissionStatusChange'
 
 @Entity()
 export class Request extends BaseEntity {
@@ -42,6 +43,12 @@ export class Request extends BaseEntity {
   networkLastChangeAt: Date
 
   @Column({
+    nullable: true,
+    default: null
+  })
+  networkResolvedAt: Date
+
+  @Column({
     type: 'citext',
     update: false
   })
@@ -68,4 +75,7 @@ export class Request extends BaseEntity {
 
   @OneToMany(type => Evidence, async evidence => await evidence.request)
   evidence: Promise<Evidence[]>
+
+  @OneToMany(type => SubmissionStatusChange, async submissionStatusChange => await submissionStatusChange.request)
+  submissionStatusChanges: Promise<SubmissionStatusChange[]>
 }

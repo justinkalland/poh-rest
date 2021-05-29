@@ -75,7 +75,7 @@ export class Evidence extends BaseEntity {
     }
 
     // temporary patch to account for the first manually added humans in the registry
-    if (this.senderEthAddress.toLowerCase() === '0x595fe42383a783180a0f77ed672efa0090d7623a') {
+    if (this.senderEthAddress.toLowerCase() === '0x595fe42383a783180a0f77ed672efa0090d7623a' && this.networkCreationAt.getTime() < 1615810508000) {
       return true
     }
 

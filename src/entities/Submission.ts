@@ -2,6 +2,7 @@ import ipfs from '../lib/ipfs'
 import { Entity, Column, PrimaryColumn, CreateDateColumn, UpdateDateColumn, OneToMany } from 'typeorm'
 import { Request } from './Request'
 import { Evidence } from './Evidence'
+import { SubmissionStatusChange } from './SubmissionStatusChange'
 import BaseEntityWithPagination from './BaseEntityWithPagination'
 
 export enum SubmissionStatus {
@@ -112,6 +113,9 @@ export class Submission extends BaseEntityWithPagination {
 
   @OneToMany(type => Evidence, async evidence => await evidence.submission)
   evidence: Promise<Evidence[]>
+
+  @OneToMany(type => SubmissionStatusChange, async submissionStatusChange => await submissionStatusChange.submission)
+  submissionStatusChanges: Promise<SubmissionStatusChange[]>
 
   public get profileUrl (): string {
     const POH_PROFILE_BASE = process.env.POH_PROFILE_BASE === undefined ? '' : process.env.POH_PROFILE_BASE
