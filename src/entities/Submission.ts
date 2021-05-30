@@ -3,6 +3,7 @@ import { Entity, Column, PrimaryColumn, CreateDateColumn, UpdateDateColumn, OneT
 import { Request } from './Request'
 import { Evidence } from './Evidence'
 import { SubmissionStatusChange } from './SubmissionStatusChange'
+import { Vouch } from './Vouch'
 import BaseEntityWithPagination from './BaseEntityWithPagination'
 
 export enum SubmissionStatus {
@@ -116,6 +117,12 @@ export class Submission extends BaseEntityWithPagination {
 
   @OneToMany(type => SubmissionStatusChange, async submissionStatusChange => await submissionStatusChange.submission)
   submissionStatusChanges: Promise<SubmissionStatusChange[]>
+
+  @OneToMany(type => Vouch, async vouch => await vouch.fromSubmission)
+  vouchedFor: Promise<Vouch[]>
+
+  @OneToMany(type => Vouch, async vouch => await vouch.toSubmission)
+  vouchedBy: Promise<Vouch[]>
 
   public get profileUrl (): string {
     const POH_PROFILE_BASE = process.env.POH_PROFILE_BASE === undefined ? '' : process.env.POH_PROFILE_BASE

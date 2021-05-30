@@ -2,6 +2,7 @@ import { FastifyInstance } from 'fastify'
 import Schemas from '../Schemas'
 
 import { Submission } from '../../entities/Submission'
+import { Vouch } from '../../entities/Vouch'
 import { URL } from 'url'
 import { SubmissionStatusChange } from '../../entities/SubmissionStatusChange'
 
@@ -56,6 +57,34 @@ async function routes (fastify: FastifyInstance, options): Promise<void> {
     }
 
     return submissionStatusChanges.map(change => change.toPublicStatusChange())
+  })
+
+  fastify.get<{
+    Params: { eth_address: string }
+  }>('/profiles/:eth_address/vouches', {
+    schema: {
+      description: 'Profiles that have given and received vouches for the given profile.',
+      tags: ['profiles'],
+      params: {
+        type: 'object',
+        required: ['eth_address'],
+        properties: { ...Schemas.ethAddressProperty }
+      },
+      response: {
+        200: Schemas.profileVouches
+      }
+    }
+  }, async (request, reply) => {
+    const givenVouches = await Vouch.find({ where: { fromSubmissionEthAddress: request.params.eth_address }, relations: ['toSubmission'] })
+    const givenSubmissions = await Promise.all(givenVouches.map(async vouch => await vouch.toSubmission))
+
+    const receivedVouches = await Vouch.find({ where: { toSubmissionEthAddress: request.params.eth_address }, relations: ['fromSubmission'] })
+    const receivedSubmissions = await Promise.all(receivedVouches.map(async vouch => await vouch.fromSubmission))
+
+    return {
+      given: givenSubmissions.map(submission => submission.toPublicProfile()),
+      received: receivedSubmissions.map(submission => submission.toPublicProfile())
+    }
   })
 
   fastify.get<{

@@ -8,8 +8,10 @@ import axios from 'axios'
 import { uniqBy } from 'lodash'
 import { Request } from '../../entities/Request'
 import { Evidence } from '../../entities/Evidence'
+import { Vouch } from '../../entities/Vouch'
 import { Submission, SubmissionStatus } from '../../entities/Submission'
 import { SubmissionStatusChange } from '../../entities/SubmissionStatusChange'
+import { In, Not } from 'typeorm'
 
 const PAGE_SIZE = 1000
 
@@ -36,6 +38,9 @@ async function fetchRequests (where = {}): Promise<Array<{}>> {
                   registered
                   submissionTime
                   name
+                  vouchesReceived {
+                    id
+                  }
                   vouchesReceivedLength
                   disputed
                   requestsLength
@@ -234,12 +239,35 @@ async function processSubmission (submissionData): Promise<Submission> {
   return submission
 }
 
+async function processVouches (toSubmissionEthAddress, fromAddresses): Promise<void> {
+  await Promise.all(fromAddresses.map(async fromSubmissionEthAddress => {
+    const vouch = new Vouch()
+    vouch.toSubmissionEthAddress = toSubmissionEthAddress
+    vouch.fromSubmissionEthAddress = fromSubmissionEthAddress
+    vouch.deletedAt = null
+    vouch.generateId()
+    return await vouch.save()
+  }))
+
+  const vouchesToDelete = await Vouch.find({ where: { deletedAt: null, toSubmissionEthAddress, fromSubmissionEthAddress: Not(In(fromAddresses)) } })
+  await Promise.all(vouchesToDelete.map(async vouch => await vouch.softRemove()))
+}
+
 async function deepProcessRequests (requestsData): Promise<[string]> {
   const submissionsData = uniqBy(requestsData.map((request: any) => request.submission), (submissionData: any) => submissionData.id)
   const evidenceData = requestsData.map((request: any) => request.evidence).flat()
+  const vouchesData = submissionsData.filter((submissionData: any) => submissionData.vouchesReceived?.length > 0).map((submissionData: any) => {
+    return {
+      toSubmissionEthAddress: submissionData.id,
+      fromAddresses: submissionData.vouchesReceived.map(vouchReceived => vouchReceived.id)
+    }
+  })
   await Promise.all(submissionsData.map(processSubmission))
   await Promise.all(requestsData.map(processRequest))
   await Promise.all(evidenceData.map(processEvidence))
+  await Promise.all(vouchesData.map(async submissionVouchesData => {
+    return await processVouches(submissionVouchesData.toSubmissionEthAddress, submissionVouchesData.fromAddresses)
+  }))
   return requestsData.map(data => data.id)
 }
 

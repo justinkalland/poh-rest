@@ -57,6 +57,15 @@ export const profileStatusHistory = {
   }
 }
 
+export const profileVouches = {
+  description: 'Grouped profiles (given / received)',
+  type: 'object',
+  properties: {
+    given: { type: 'array', items: profile },
+    received: { type: 'array', items: profile }
+  }
+}
+
 export const paginatedMeta = {
   description: 'Profile (might not be registered)',
   type: 'object',
@@ -143,5 +152,6 @@ export default {
   paginatedMeta,
   orderedWithCursorProperties,
   status,
-  profileStatusHistory
+  profileStatusHistory,
+  profileVouches
 }
