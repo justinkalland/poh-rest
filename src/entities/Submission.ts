@@ -1,5 +1,5 @@
 import ipfs from '../lib/ipfs'
-import { Entity, Column, PrimaryColumn, CreateDateColumn, UpdateDateColumn, OneToMany } from 'typeorm'
+import { Entity, Column, PrimaryColumn, CreateDateColumn, UpdateDateColumn, OneToMany, Index } from 'typeorm'
 import { Request } from './Request'
 import { Evidence } from './Evidence'
 import { SubmissionStatusChange } from './SubmissionStatusChange'
@@ -25,6 +25,7 @@ export class Submission extends BaseEntityWithPagination {
   })
   ethAddress: string
 
+  @Index({ unique: true })
   @Column({
     nullable: true,
     default: null
@@ -133,6 +134,7 @@ export class Submission extends BaseEntityWithPagination {
     return {
       eth_address: this.ethAddress,
       status: this.status,
+      vanity_id: this.vanityId === null ? undefined : this.vanityId,
       creation_time: this.networkCreationAt,
       display_name: this.displayName,
       first_name: this.firstName,

@@ -48,10 +48,12 @@ createConnection().then(async connection => {
   schedule.scheduleJob('*/5 * * * * *', async () => {
     await forkIfNotRunning('updateStatus')
   })
+
   schedule.scheduleJob('*/10 * * * * *', async () => {
     await forkIfNotRunning('updateUnresolvedGraphRequests').then(async code => {
       if (code !== -1) {
         await forkIfNotRunning('updateEvidenceCache')
+        await forkIfNotRunning('assignVanityIds')
       }
     })
   })

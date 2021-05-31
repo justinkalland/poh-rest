@@ -29,6 +29,7 @@ export const profile = {
       type: 'string',
       enum: Object.keys(SubmissionStatus)
     },
+    vanity_id: { type: 'number', example: 1, description: 'Sequential ID assigned to each profile when registration is accepted. Profiles that have never been accepted into the registry will not have a vanity_id!' },
     display_name: { type: 'string', example: 'satoshin' },
     first_name: { type: 'string', example: 'Satoshi' },
     last_name: { type: 'string', example: 'Nakamoto' },
