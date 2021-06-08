@@ -6,3 +6,4 @@ tmp/
 temp/
 .nyc_output/
 .env
+.DS_Store

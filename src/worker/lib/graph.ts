@@ -14,6 +14,7 @@ import { SubmissionStatusChange } from '../../entities/SubmissionStatusChange'
 import { In, Not } from 'typeorm'
 
 const PAGE_SIZE = 1000
+const SUBGRAPH_BASE = process.env.SUBGRAPH_BASE === undefined ? '' : process.env.SUBGRAPH_BASE
 
 async function fetchRequests (where = {}): Promise<Array<{}>> {
   let requests: Array<{}> = []
@@ -26,7 +27,7 @@ async function fetchRequests (where = {}): Promise<Array<{}>> {
       ...where,
       creationTime_lte: creationTimeOffset
     }).replace(/"([^"]+)":/g, '$1:')
-    const response = await axios.post('https://api.thegraph.com/subgraphs/name/kleros/proof-of-humanity-mainnet', {
+    const response = await axios.post(SUBGRAPH_BASE, {
       query: `
             {
               requests(first: ${PAGE_SIZE}, orderBy: creationTime, orderDirection: desc, where: ${stringWhere}) {
