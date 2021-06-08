@@ -21,3 +21,6 @@ This project is in its infancy. There may be significant changes to the endpoint
 This project compiles information about Proof of Humanity, stores and serves it in a centralized mutable manner. It would be bad practice to rely on this as a source of truth or as a critical service.
 
 Sometimes centralized relational data is preferable. Such as building aggregated reports, data visualization, widgets, or for fun informative services.
+
+## Alternate Servers
+- *[Kovan Testnet](https://api-kovan.poh.dev/docs)*
