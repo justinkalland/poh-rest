@@ -79,6 +79,11 @@ export class Evidence extends BaseEntity {
       return true
     }
 
+    // temporary patch to account for governor proxy on Kovan - without this
+    if (this.senderEthAddress.toLowerCase() === '0xf5fcfd161c1a5036a4a9dec9060fd5f769061de7') {
+      return true
+    }
+
     return this.submissionEthAddress.toLowerCase() === this.senderEthAddress.toLowerCase()
   }
 }
